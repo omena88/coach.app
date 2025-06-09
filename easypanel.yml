@@ -1,0 +1,64 @@
+name: web-coaching
+services:
+  - name: app
+    image: 
+      dockerfile: ./Dockerfile
+    domains:
+      - host: tudominio.com # Cambia por tu dominio
+    env:
+      - name: APP_NAME
+        value: WebCoaching
+      - name: APP_ENV
+        value: production
+      - name: APP_DEBUG
+        value: "false"
+      - name: APP_URL
+        value: https://tudominio.com # Cambia por tu dominio
+      - name: DB_CONNECTION
+        value: mysql
+      - name: DB_HOST
+        value: mysql
+      - name: DB_PORT
+        value: "3306"
+      - name: DB_DATABASE
+        value: webcoaching
+      - name: DB_USERNAME
+        value: root
+      - name: DB_PASSWORD
+        value: tu_password_mysql # Cambia por tu password
+      - name: MAIL_MAILER
+        value: smtp
+      - name: MAIL_HOST
+        value: smtp.gmail.com
+      - name: MAIL_PORT
+        value: "587"
+      - name: MAIL_USERNAME
+        value: tu_email@gmail.com # Cambia por tu email
+      - name: MAIL_PASSWORD
+        value: tu_app_password # Cambia por tu app password
+      - name: MAIL_ENCRYPTION
+        value: tls
+    ports:
+      - published: 80
+        target: 80
+    volumes:
+      - source: app_storage
+        target: /var/www/html/storage
+  
+  - name: mysql
+    image: mysql:8.0
+    env:
+      - name: MYSQL_ROOT_PASSWORD
+        value: tu_password_mysql # Cambia por tu password
+      - name: MYSQL_DATABASE
+        value: webcoaching
+    volumes:
+      - source: mysql_data
+        target: /var/lib/mysql
+    ports:
+      - published: 3306
+        target: 3306
+
+volumes:
+  - name: app_storage
+  - name: mysql_data 
